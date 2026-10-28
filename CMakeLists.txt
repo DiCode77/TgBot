@@ -6,6 +6,7 @@ set(SRC_BOT "${SRC}/bot")
 set(SRC_CURL "${SRC}/curl")
 set(SRC_TOOLS "${SRC}/tools")
 set(SRC_PARSE "${SRC}/parse")
+set(SRC_RECORD "${SRC}/record")
 set(EXAMPLES "${CMAKE_CURRENT_SOURCE_DIR}/examples")
 
 find_package(CURL REQUIRED)
@@ -20,10 +21,19 @@ file(GLOB_RECURSE SRC_FILES_LIB_BOT "${SRC_BOT}/*.hpp" "${SRC_BOT}/*.cpp")
 file(GLOB_RECURSE SRC_FILES_LIB_CURL "${SRC_CURL}/*.hpp" "${SRC_CURL}/*.cpp" "${SRC_CURL}/*.inl")
 file(GLOB_RECURSE SRC_FILES_LIB_TOOLS "${SRC_TOOLS}/*.hpp" "${SRC_TOOLS}/*.cpp" "${SRC_TOOLS}/*.inl")
 file(GLOB_RECURSE SRC_FILES_LIB_PARSE "${SRC_PARSE}/*.hpp" "${SRC_PARSE}/*.cpp" "${SRC_PARSE}/*.inl")
+file(GLOB_RECURSE SRC_FILES_LIB_RECORD "${SRC_RECORD}/*.hpp" "${SRC_RECORD}/*.cpp" "${SRC_RECORD}/*.inl")
 
-add_library(${PROJ_LIB_NAME} STATIC ${SRC_FILES_LIB_BOT} ${SRC_FILES_LIB_CURL} ${SRC_FILES_LIB_TOOLS} ${SRC_FILES_LIB_PARSE})
+add_library(${PROJ_LIB_NAME} STATIC ${SRC_FILES_LIB_BOT} 
+                                    ${SRC_FILES_LIB_CURL} 
+                                    ${SRC_FILES_LIB_TOOLS} 
+                                    ${SRC_FILES_LIB_PARSE}
+                                    ${SRC_FILES_LIB_RECORD})
 
-target_include_directories(${PROJ_LIB_NAME} PUBLIC ${SRC_BOT} ${SRC_CURL} ${SRC_TOOLS} ${SRC_PARSE})
+target_include_directories(${PROJ_LIB_NAME} PUBLIC ${SRC_BOT} 
+                                                   ${SRC_CURL}
+                                                   ${SRC_TOOLS} 
+                                                   ${SRC_PARSE}
+                                                   ${SRC_RECORD})
 
 target_link_libraries(${PROJ_LIB_NAME} PUBLIC CURL::libcurl utf8cpp nlohmann_json::nlohmann_json)
 
@@ -33,6 +43,7 @@ source_group("src\\bot" FILES ${SRC_FILES_LIB_BOT})
 source_group("src\\curl" FILES ${SRC_FILES_LIB_CURL})
 source_group("src\\tools" FILES ${SRC_FILES_LIB_TOOLS})
 source_group("src\\parse" FILES ${SRC_FILES_LIB_PARSE})
+source_group("src\\record" FILES ${SRC_FILES_LIB_RECORD})
 
 #// Example of use.
 
@@ -40,7 +51,11 @@ set(EXA_FILES "${EXAMPLES}/main.cpp")
 
 add_executable(${PROJECT_NAME} ${EXA_FILES})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${SRC_BOT} ${SRC_CURL} ${SRC_TOOLS} ${SRC_PARSE})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SRC_BOT} 
+                                                   ${SRC_CURL} 
+                                                   ${SRC_TOOLS} 
+                                                   ${SRC_PARSE} 
+                                                   ${SRC_RECORD})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC CURL::libcurl utf8cpp nlohmann_json::nlohmann_json ${PROJ_LIB_NAME})
 
